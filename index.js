@@ -12,6 +12,9 @@ const winCondition = [
     [0,4,8],[2,4,6]
 ];
 
+let runningGame = true;
+let playerWinner = "";
+
 function checkTheGame(){
 
     let gameWon = false;
@@ -26,34 +29,33 @@ function checkTheGame(){
             continue;
         }
         if(cellA == cellB && cellB == cellC){
+            playerWinner = cellA;
             gameWon = true;
             break;
         }
     }
 
-    let runningGame = false;
-
     if(gameWon){
         runningGame = false
+        playerDisplay.innerText = `Player ${playerWinner} Win`;
         console.log("win");
     }
     else if(!gameBoard.includes("")){
         runningGame = false;
+        playerDisplay.innerText = "It's a draw";
         console.log("draw");
     }
-    
 }
 
 const playerChoice = function (){
-    let player = "X";
+    let player = "O";
     return function(){
-        player = player === "X" ? "O" : "X";
+        player = player === "O" ? "X" : "O";
         return player;
     }
 }();
 
-
-
+const playerDisplay = document.getElementById("playerDisplay");
 const cell = document.querySelectorAll(".cell");
 
 cell.forEach((element, index)=> {
@@ -62,15 +64,39 @@ cell.forEach((element, index)=> {
         
         if(gameBoard[index].includes("X")||gameBoard[index].includes("O")){
             console.log("Invalid");
-            checkTheGame();
+        }
+        else if(!runningGame){
+            console.log("Game Over");
         }
         else{
             const player = playerChoice();
             gameBoard[index] = player;
             element.innerHTML = player;
+
+            const oppositePlayerTurnDisplay = (player =="X")?"O":"X";
+            playerDisplay.innerText = `Player ${oppositePlayerTurnDisplay} turn`;
+
             console.log(gameBoard);
+            console.log("Play");
             checkTheGame();
         }
         
     })
+})
+
+const resetButton = document.getElementById("resetButton");
+
+resetButton.addEventListener("click", ()=>{
+    runningGame = true;
+
+    cell.forEach(element =>{
+        element.innerHTML = "";
+    })
+    
+    for(let i=0; i<gameBoard.length; i++){
+        gameBoard[i] = "";
+    }
+
+    playerDisplay.innerText = "Player X turn";
+    console.log(gameBoard);
 })
