@@ -1,7 +1,7 @@
 const gameBoard = [
-    "x","o","x",
-    "o","o","x",
-    "x","x","o"
+    "","","",
+    "","","",
+    "","",""
 ];
 
 const winCondition = [
@@ -30,13 +30,47 @@ function checkTheGame(){
             break;
         }
     }
-    
+
+    let runningGame = false;
+
     if(gameWon){
+        runningGame = false
         console.log("win");
     }
     else if(!gameBoard.includes("")){
+        runningGame = false;
         console.log("draw");
     }
+    
 }
 
-checkTheGame();
+const playerChoice = function (){
+    let player = "X";
+    return function(){
+        player = player === "X" ? "O" : "X";
+        return player;
+    }
+}();
+
+
+
+const cell = document.querySelectorAll(".cell");
+
+cell.forEach((element, index)=> {
+
+    element.addEventListener('click', () => {
+        
+        if(gameBoard[index].includes("X")||gameBoard[index].includes("O")){
+            console.log("Invalid");
+            checkTheGame();
+        }
+        else{
+            const player = playerChoice();
+            gameBoard[index] = player;
+            element.innerHTML = player;
+            console.log(gameBoard);
+            checkTheGame();
+        }
+        
+    })
+})
