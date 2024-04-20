@@ -97,6 +97,6 @@ resetButton.addEventListener("click", ()=>{
         gameBoard[i] = "";
     }
 
-    playerDisplay.innerText = "Player X turn";
+    playerDisplay.innerText = "Player ?";
     console.log(gameBoard);
 })
